@@ -4,7 +4,11 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index
-    @contacts = Contact.all
+    # only show contacts for current login user
+    @user = User.find_by_id(current_user.id)
+    if (!@user.nil?)
+      @contacts = @user.contacts
+    end
   end
 
   # GET /contacts/1
@@ -72,6 +76,7 @@ class ContactsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def contact_params
       params.require(:contact).permit(:first_name, :last_name, 
+        phone_numbers_attributes: [:id, :number, :phone_type, :_destroy],
         addresses_attributes: [:id, :street, :city, :region, :country, :postal_code, :_destroy]
         )
     end
