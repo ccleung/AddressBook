@@ -26,8 +26,6 @@ class ContactsController < ApplicationController
   # POST /contacts.json
   def create
     @contact = Contact.new(contact_params)
-    @phone_num = PhoneNumber.new(contact_params[:phone_numbers_attributes])
-    @contact.phone_numbers << @phone_num
 
     respond_to do |format|
       if @contact.save
@@ -72,6 +70,6 @@ class ContactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contact_params
-      params.require(:contact).permit(:first_name, :last_name, :phone_number_ids => [])
+      params.require(:contact).permit(:first_name, :last_name, phone_numbers_attributes: [:id, :number, :phone_type])
     end
 end
