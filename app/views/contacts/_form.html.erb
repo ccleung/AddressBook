@@ -15,8 +15,18 @@
   <%= f.simple_fields_for :phone_numbers do |p| %>
     <%= p.input :phone_type %>
     <%= p.input :number %>
-    <%= p.link_to_remove "Remove this task" %>
+    <%= p.link_to_remove "Remove this phone number" %>
   <% end %>
-  <p><%= f.link_to_add "Add a task", :phone_numbers %></p>
+  <p><%= f.link_to_add "Add a phone number", :phone_numbers %></p>
+
+  <%= f.simple_fields_for :addresses do |address_form| %>
+    <%= address_form.input :street %>
+    <%= address_form.input :city %>
+    <%= address_form.input :region %>
+    <%= address_form.input :country %>
+    <%= address_form.input :postal_code %>
+    <%= address_form.link_to_remove "Remove this address" %>
+  <% end %>
+  <p><%= f.link_to_add "Add an address", :addresses %></p>
   <%= f.button :submit %>
 <% end %>
