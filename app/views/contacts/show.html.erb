@@ -8,5 +8,15 @@
   <%= @contact.last_name %>
 </p>
 
+<p># of phone numbers: <%= @contact.phone_numbers.size %> </p>
+
+<strong>Phone numbers:</strong>
+<% @contact.phone_numbers.each do |phone_number| %>
+<p>
+  <%= phone_number.phone_type %>
+  <%= phone_number.number %>
+</p>
+<% end %>
+
 <%= link_to 'Edit', edit_contact_path(@contact) %> |
 <%= link_to 'Back', contacts_path %>

@@ -12,5 +12,9 @@
   <% end %>
   <%= f.input :first_name %>
   <%= f.input :last_name %>
+  <%= f.simple_fields_for :phone_numbers do |p| %>
+    <%= p.input :phone_type %>
+    <%= p.input :number %>
+  <% end %>
   <%= f.button :submit %>
 <% end %>
