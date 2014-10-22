@@ -19,30 +19,23 @@ module Rest
       end
     end
 
+    before do
+      verify_authenticated!
+    end
+
   	resource :user do
       get 'contacts' do
-        verify_authenticated!
-  	    #Rails.logger.info "Completed in #{headers}"
-  	    
-  	    if (@user.nil?)
-  	      error!('User does not exist', 404)
-  	    end
         # todo hide user id ?
   	    @contacts = @user.contacts
       end
 
       get do
         verify_authenticated!
-        @user = User.find_by_email(@current_user_email)
-        if (@user.nil?)
-          error!('User does not exist', 404)
-        end
         @user
       end
 
       # TODO: show which fields were invalid. Add requires parameters
       post 'contact/new' do
-        verify_authenticated!
         @contact = Contact.new(params[:contact])
 
         @phone_numbers = params[:phone_numbers]
@@ -71,6 +64,31 @@ module Rest
         @contact
       end
 
+      put 'contact/:id' do
+        Rails.logger.info "  Parameters: #{params[:id]}"
+        @contact = Contact.find(params[:id])
+        if (@contact.nil?)
+          error!('Contact does not exist', 404)
+        end
+        if (@contact.user_id == @user.id)
+          error!('Cannot edit', 403)
+        else
+          error!('Cannot edit contacts that are not yours', 403)
+        end
+      end
+
+      delete 'contact/:id' do
+         Rails.logger.info "  Parameters: #{params[:id]}"
+        @contact = Contact.find(params[:id])
+        if (@contact.nil?)
+          error!('Contact does not exist', 404)
+        end
+        if (@contact.user_id == @user.id)
+          Contact.destroy(params[:id])
+        else
+          error!('Cannot delete contacts that are not yours', 403)
+        end
+      end
     end
 
    end
