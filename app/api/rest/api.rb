@@ -9,8 +9,11 @@ module Rest
   	helpers do
       def current_user_email
         @current_user_email ||= headers['X-User-Email']
+        @user = User.find_by_email(@current_user_email)
+        !@user.nil?
       end
 
+      # if you aren't in our system then you can't do anything
       def verify_authenticated!
         error!('401 Unauthorized', 401) unless current_user_email
       end
@@ -20,7 +23,7 @@ module Rest
       get 'contacts' do
         verify_authenticated!
   	    #Rails.logger.info "Completed in #{headers}"
-  	    @user = User.find_by_email(@current_user_email)
+  	    
   	    if (@user.nil?)
   	      error!('User does not exist', 404)
   	    end
@@ -35,6 +38,25 @@ module Rest
           error!('User does not exist', 404)
         end
         @user
+      end
+
+      # TODO: show which fields were invalid. Add requires parameters
+      post 'contact/new' do
+        verify_authenticated!
+        @contact = Contact.new(params[:contact])
+        @phone_numbers = params[:phone_numbers]
+        @phone_numbers.each do |phone_number|
+          @contact_phone_number = PhoneNumber.new
+          @contact_phone_number.phone_type = phone_number.phone_type
+          @contact_phone_number.number = phone_number.number
+          @contact.phone_numbers << @contact_phone_number
+          #@contact.phone_numbers.build(@contact_phone_number)
+        end
+        @user.contacts << @contact
+        if (!@user.save)
+          error!('Invalid request data', 400)
+        end
+        @contact
       end
 
     end

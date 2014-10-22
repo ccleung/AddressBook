@@ -29,6 +29,7 @@ class ContactsController < ApplicationController
   # POST /contacts
   # POST /contacts.json
   def create
+    Rails.logger.info "Completed in #{contact_params}"
     @contact = Contact.new(contact_params)
     @contact.user_id = current_user.id
 
