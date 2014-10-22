@@ -1,5 +1,7 @@
 require 'grape'
 
+# TODO: api for getting phone numbers and addreses by contact id
+# TODO: figure out how to expose devise methods so the API can use them for registering a user
 module Rest
   class API < Grape::API
   	prefix "api"
