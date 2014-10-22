@@ -13,17 +13,81 @@ class APITest < MiniTest::Unit::TestCase
 
   def setup
     @user = APITest.initialize_user
-    response = RestClient.get("https://applicationname-api-sbox02.herokuapp.com/api/v1/users", 
-      {
-         "Content-Type" => "application/json",
-         "Authorization" => "token 4d012314b7e46008f215cdb7d120cdd7",
-         "Manufacturer-Token" => "8d0693ccfe65104600e2555d5af34213"
-      }
-    ) 
-    @data = JSON.parse response.body
+    # TODO: move this into a config
+    @url_base = "http://localhost:3000"
+    @contact = nil
   end
 
-  def test_id_correct
-    assert_equal 4, @data['id']
+  def test_get_contacts_without_email
+    url = @url_base + "/api/v1/user/contacts"
+      @response = RestClient.get(url, 
+      {
+         "Content-Type" => "application/json",
+      }
+    ) 
+    assert_equal 401, @response.code
   end
+
+  def test_post_contact_for_user
+    url = @url_base + "/api/v1/user/contact/new"
+    phone_numbers = Array.new(2,Hash.new)
+      @response = RestClient.post(url, 
+        {
+          :contact => {
+              :first_name => "aaaaaa", 
+              :last_name => "alskjdalksd"
+          },
+
+          :phone_number => [{:phone_type => "mobile",:phone_number => "+1-321-3211"}, {:phone_type => "home",:phone_number => "+1-111-3211"}]
+
+          #:addresses => [
+          #    {
+          #      :street => "sss",
+          #      :city => "new york",
+          #      :country => "CA",
+          #      :region => "BC",
+          #      :postal_code => "M5R 1K2"
+          #    }]
+        },
+      {
+         "Content-Type" => "application/json",
+         "X-User-Email" => "test@test.com"
+      }
+    ) 
+    assert assert_equal 201, @response.code
+  end
+
+
+  # helper to share code between tests for now
+  def get_contacts_request
+    url = @url_base + "/api/v1/user/contacts"
+      @response = RestClient.get(url, 
+      {
+         "Content-Type" => "application/json",
+         "X-User-Email" => "test@test.com"
+      }
+    ) 
+    @data = JSON.parse @response.body
+    @contact = @data.first
+  end
+
+  def test_get_contacts_with_valid_email
+    get_contacts_request
+    assert_equal 200, @response.code
+    refute_nil @contact
+  end
+
+  # TODO: get the id from the get request, of the previous test some how
+  def test_delete_contact_with_valid_email
+    get_contacts_request
+    url = @url_base + "/api/v1/user/contact/" + @contact['id'].to_s
+      @response = RestClient.delete(url, 
+      {
+         "Content-Type" => "application/json",
+         "X-User-Email" => "test@test.com"
+      }
+    )
+    assert_equal 200, @response.code 
+  end
+  
 end

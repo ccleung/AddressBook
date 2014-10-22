@@ -34,8 +34,10 @@ gem 'phony'
 gem 'grape'
 gem 'hashie_rails'
 
-group :development, :test do
+group :test do
   gem 'rspec-rails', '~> 3.0.0'
+  gem 'minitest'
+  gem 'rest-client'
 end
 
 # Use ActiveModel has_secure_password

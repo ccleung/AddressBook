@@ -38,9 +38,10 @@ module Rest
 
       # TODO: show which fields were invalid. Add requires parameters
       post 'contact/new' do
+        Rails.logger.info "  Parameters: #{params}"
         @contact = Contact.new(params[:contact])
 
-        @phone_numbers = params[:phone_numbers]
+        @phone_numbers = params[:phone_numbers] || Array.new
         @phone_numbers.each do |phone_number|
           @phone_number = PhoneNumber.new
           @phone_number.phone_type = phone_number.phone_type
@@ -48,7 +49,7 @@ module Rest
           @contact.phone_numbers << @phone_number
         end
 
-        @addresses = params[:addresses]
+        @addresses = params[:addresses] || Array.new
         @addresses.each do |address|
           @address = Address.new
           @address.street = address.street
