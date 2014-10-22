@@ -31,6 +31,7 @@ gem 'simple_form'
 gem 'nested_form'
 gem 'country_select'
 gem 'phony'
+gem 'grape'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
