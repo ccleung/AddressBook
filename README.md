@@ -19,7 +19,9 @@ Current features of the API:
 Since the API and website share the same model, the same validations are performed on Create/Save.  
 
 Features that would be great to have:
+
 1. For the Website
+
 * Better UI to improve experience - for starters, get a nice stylesheet template
 * Photo's associated to each of your contacts
 * Localization
@@ -28,6 +30,7 @@ Features that would be great to have:
 * Integrate Google Maps to validate contact list addresses, and to provide a link perhaps to show location on map
 
 2. For the API
+
 * OAuth2 - e.g., access tokens that can be revoked, have an expiry time, client's need to register with us and are provided with a client key
 * Limiting endpoints based on access token authorization level (e.g., we may want to make some endpoints limited to certain customers, or allow some endpoints to have anonymous access)
 * Pagination for list of contacts
@@ -38,7 +41,8 @@ Features that would be great to have:
 * Integrating a plugin, such as swagger to create an auto-generated documentation page
 * Integration with other contact list providers, such as gmail, work, outlook?
 
-Improvements that can be made to make website/service and API more robust:
+3. Improvements that can be made to make website/service and API more robust:
+
 * Leverage caching of contact lists to make server more responsive
 * Integrate metrics monitoring for API (what time does it get used the most, how often, from which geo's etc, which endpoints are used the most)
 * Allow clients to make conditional requests with ETAGS
