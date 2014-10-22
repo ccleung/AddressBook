@@ -64,21 +64,25 @@ module Rest
         @contact
       end
 
+      # TODO: should be able to edit anything in contacts, including numbers and addresses
       put 'contact/:id' do
-        Rails.logger.info "  Parameters: #{params[:id]}"
         @contact = Contact.find(params[:id])
         if (@contact.nil?)
           error!('Contact does not exist', 404)
         end
         if (@contact.user_id == @user.id)
-          error!('Cannot edit', 403)
+          @contact.first_name = params[:contact].first_name
+          @contact.last_name = params[:contact].last_name
+          if (!@contact.save)
+            Rails.logger.info "  Parameters: #{params[:contact]}"
+            error!('Invalid request data', 400)
+          end
         else
           error!('Cannot edit contacts that are not yours', 403)
         end
       end
 
       delete 'contact/:id' do
-         Rails.logger.info "  Parameters: #{params[:id]}"
         @contact = Contact.find(params[:id])
         if (@contact.nil?)
           error!('Contact does not exist', 404)
