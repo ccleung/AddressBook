@@ -44,14 +44,26 @@ module Rest
       post 'contact/new' do
         verify_authenticated!
         @contact = Contact.new(params[:contact])
+
         @phone_numbers = params[:phone_numbers]
         @phone_numbers.each do |phone_number|
-          @contact_phone_number = PhoneNumber.new
-          @contact_phone_number.phone_type = phone_number.phone_type
-          @contact_phone_number.number = phone_number.number
-          @contact.phone_numbers << @contact_phone_number
-          #@contact.phone_numbers.build(@contact_phone_number)
+          @phone_number = PhoneNumber.new
+          @phone_number.phone_type = phone_number.phone_type
+          @phone_number.number = phone_number.number
+          @contact.phone_numbers << @phone_number
         end
+
+        @addresses = params[:addresses]
+        @addresses.each do |address|
+          @address = Address.new
+          @address.street = address.street
+          @address.city = address.city
+          @address.country = address.country
+          @address.region = address.region
+          @address.postal_code = address.postal_code
+          @contact.addresses << @address
+        end
+
         @user.contacts << @contact
         if (!@user.save)
           error!('Invalid request data', 400)
