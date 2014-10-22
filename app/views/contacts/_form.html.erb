@@ -13,7 +13,7 @@
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.simple_fields_for :phone_numbers do |p| %>
-    <%= p.input :phone_type %>
+    <%= p.input :phone_type, collection: PhoneNumber.valid_phone_types, default: PhoneNumber.valid_phone_types.first %>
     <%= p.input :number %>
     <%= p.link_to_remove "Remove this phone number" %>
   <% end %>
