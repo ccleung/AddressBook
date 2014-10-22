@@ -1,6 +1,85 @@
 AddressBook
 ===========
 
+# Instructions:
+
+1 - Run the following in the project's root directory :
+
+```
+bundle install
+```
+
+2 - Migrations
+
+```
+rake db:migrate
+```
+
+3 - Start the server
+
+```
+rails s
+```
+
+4 - Hit the following url:
+```
+	http://localhost:3000/
+```
+
+5 - API endpoints:
+
+POST /api/v1/user/contact/new
+
+sample request body:
+```
+{
+  "contact": {
+    "first_name":"Andrew",
+    "last_name":"Smith"
+  },
+              
+  	"phone_numbers" : [
+    {"phone_type" : "mobile" , "number" : "+1-416-333-4444"},
+	{"phone_type" : "home" , "number" : "+1-416-444-4444"}
+  ],
+  
+  "addresses" : [
+    {"street" : "123 Peter Street",
+    "city" : "Toronto",
+    "country" : "CA",
+    "region" : "ON",
+    "postal_code" : "M5R2E5"}
+   ]
+}
+```
+```
+GET /api/v1/user/contacts
+```
+
+```
+DELETE /api/v1/user/contact/{:id}
+```
+
+```
+PUT /api/v1/user/contact{:id}
+```
+
+sample request body:
+
+```
+{
+  "contact": {
+    "first_name":"John",
+    "last_name":"Smith"
+  }
+}
+```
+
+NOTE: For the API to work you must have created an account on the website previously. With the registered email, you need to put a custom header X-User-Email : EmailAddress to gain authorization to any of the aforementioned requests.
+
+
+# Description
+
 This project contains a web service and API developed in Ruby on Rails to manage a user's contact list. The scope of the contact list is currently limited to first name, last name, multiple phone numbers, and multiple addresses. The app leverages several gems, such as Devise for building a quick login system, and Grape for building out an API.
 
 Considerations were made to use existing Ruby on Rails controllers, response_to statement to create the API. However, in the long term we probably want to keep the website and the API separate, since they two serve different purposes, and may not have the same functionality. One example would be adding Oauth2 to the API such that we are able to protect our API/resources, and monitor who is using the API.
@@ -20,7 +99,7 @@ Since the API and website share the same model, the same validations are perform
 
 Features that would be great to have:
 
-1. For the Website
+For the Website
 
 * Better UI to improve experience - for starters, get a nice stylesheet template
 * Photo's associated to each of your contacts
@@ -29,7 +108,7 @@ Features that would be great to have:
 * Make UI responsive so it can be viewed nicely on mobile phones
 * Integrate Google Maps to validate contact list addresses, and to provide a link perhaps to show location on map
 
-2. For the API
+For the API
 
 * OAuth2 - e.g., access tokens that can be revoked, have an expiry time, client's need to register with us and are provided with a client key
 * Limiting endpoints based on access token authorization level (e.g., we may want to make some endpoints limited to certain customers, or allow some endpoints to have anonymous access)
@@ -41,7 +120,7 @@ Features that would be great to have:
 * Integrating a plugin, such as swagger to create an auto-generated documentation page
 * Integration with other contact list providers, such as gmail, work, outlook?
 
-3. Improvements that can be made to make website/service and API more robust:
+Improvements that can be made to make website/service and API more robust:
 
 * Leverage caching of contact lists to make server more responsive
 * Integrate metrics monitoring for API (what time does it get used the most, how often, from which geo's etc, which endpoints are used the most)
