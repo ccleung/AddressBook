@@ -73,11 +73,13 @@ module Rest
           error!('Contact does not exist', 404)
         end
         if (@contact.user_id == @user.id)
-          @contact.first_name = params[:contact].first_name
-          @contact.last_name = params[:contact].last_name
+          @contact.first_name = params[:contact].first_name if params[:contact].first_name
+          @contact.last_name = params[:contact].last_name if params[:contact].last_name
           if (!@contact.save)
             Rails.logger.info "  Parameters: #{params[:contact]}"
             error!('Invalid request data', 400)
+          else
+            @contact
           end
         else
           error!('Cannot edit contacts that are not yours', 403)
