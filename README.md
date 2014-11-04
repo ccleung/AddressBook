@@ -61,7 +61,7 @@ DELETE /api/v1/user/contact/{:id}
 ```
 
 ```
-PUT /api/v1/user/contact{:id}
+PUT /api/v1/user/contact/{:id}
 ```
 
 sample request body:
