@@ -32,6 +32,7 @@ gem 'nested_form'
 gem 'country_select'
 gem 'phony'
 gem 'grape'
+gem 'grape-entity', '~> 0.4.4'
 gem 'hashie_rails'
 
 group :test do

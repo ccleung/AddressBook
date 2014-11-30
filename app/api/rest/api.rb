@@ -29,6 +29,7 @@ module Rest
       get 'contacts' do
         # todo hide user id ?
   	    @contacts = @user.contacts
+        present :data, @contacts, :with => Contact::Entity
       end
 
       get do
