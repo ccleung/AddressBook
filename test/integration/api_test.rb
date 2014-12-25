@@ -1,6 +1,7 @@
 require 'minitest/autorun'
 require 'rest_client'
 require 'json'
+require 'test_helper'
 
 # TODO: Teste every endpoint to ensure email is required (to be moved to auth token for better security)
 class APITest < MiniTest::Unit::TestCase
